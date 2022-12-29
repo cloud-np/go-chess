@@ -117,6 +117,8 @@ const (
 	H1_A8_DIAG    BitBoard = 0x0102040810204080
 	LIGHT_SQUARES BitBoard = 0x55AA55AA55AA55AA
 	DARK_SQUARES  BitBoard = 0xAA55AA55AA55AA55
+	NOT_A_FILE    BitBoard = 0xfefefefefefefefe
+	NOT_H_FILE    BitBoard = 0x7f7f7f7f7f7f7f7f
 )
 
 type Coords struct {
@@ -178,12 +180,38 @@ type BitBoardShfiting interface {
 	SoWeOne() BitBoard
 }
 
-func (bitboard BitBoard) SouthOne() BitBoard {
-	return bitboard >> 8
+// Verticals do not need check for overflows
+func (b BitBoard) SouthOne() BitBoard {
+	return b >> 8
 }
 
-func (bitboard BitBoard) NorthOne() BitBoard {
-	return bitboard >> 8
+// Verticals do not need check for overflows
+func (b BitBoard) NorthOne() BitBoard {
+	return b >> 8
+}
+
+func (b BitBoard) EastOne() BitBoard {
+	return (b & NOT_H_FILE) << 1
+}
+
+func (b BitBoard) NoEaOne() BitBoard {
+	return (b & NOT_H_FILE) << 9
+}
+
+func (b BitBoard) SoEaOne() BitBoard {
+	return (b & NOT_H_FILE) >> 7
+}
+
+func (b BitBoard) WestOne() BitBoard {
+	return (b & NOT_A_FILE) >> 1
+}
+
+func (b BitBoard) SoWeOne() BitBoard {
+	return (b & NOT_H_FILE) >> 9
+}
+
+func (b BitBoard) NoWeOne() BitBoard {
+	return (b & NOT_H_FILE) << 7
 }
 
 type FormatingBitBoard interface {
@@ -208,6 +236,6 @@ func (bitboard BitBoard) GetBit(coords Coords) BitBoard {
 	return bitboard & (1 << CoordsToIndex(coords))
 }
 
-func (bitboard BitBoard) SetBit(coords Coords) {
-	bitboard |= 1 << CoordsToIndex(coords)
+func (bitboard *BitBoard) SetBit(coords Coords) {
+	*bitboard |= 1 << CoordsToIndex(coords)
 }
