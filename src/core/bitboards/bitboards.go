@@ -4,10 +4,6 @@ import "fmt"
 
 type Color uint8
 
-type ColorFuncs interface {
-	Other() Color
-}
-
 func (c Color) Other() Color {
 	return Color(COLOR_NB - c)
 }
@@ -150,11 +146,6 @@ func (coords *Coords) SetY(y int) {
 
 func (bitboard BitBoard) Board() BitBoard {
 	return bitboard
-}
-
-type BitOps interface {
-	SetBit(coords Coords)
-	GetBit(coords Coords) uint64
 }
 
 // Not needed for now

@@ -38,21 +38,17 @@ const (
 	PIECE_NB Piece = 16
 )
 
-type PieceFuncs interface {
-	type_of() PieceType
-}
-
-func (p Piece) type_of() PieceType {
+func (p Piece) TypeOf() PieceType {
 	return PieceType(p & PIECE_MASK)
 }
 
-// func (p Piece) Color() bitboards.Color {
-// 	return bitboards.Color(p >> 3)
-// }
+func (p Piece) Color() bitboards.Color {
+	return bitboards.Color(p >> 3)
+}
 
 // NOTE: It would be ideal to find a way
 // without casting. But castling in Go is not slow
 // since the value doesn't change only the type.
-func makePiece(c bitboards.Color, pt PieceType) Piece {
+func MakePiece(c bitboards.Color, pt PieceType) Piece {
 	return Piece((uint8(c) << 3) + uint8(pt))
 }
