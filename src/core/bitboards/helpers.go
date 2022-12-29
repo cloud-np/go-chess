@@ -1,4 +1,4 @@
-package boards
+package bitboards
 
 func CoordsToIndex(coords Coords) int {
 	return coords.x*8 + coords.y
