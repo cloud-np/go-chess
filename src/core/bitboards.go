@@ -85,6 +85,10 @@ const (
 	H8 Square = 63
 )
 
+func (s Square) String() string {
+	return fmt.Sprintf("%c%c", 'a'+s%8, '1'+s/8)
+}
+
 // Returns whether the square is on the board
 func isOk(s Square) bool {
 	return s >= A1 && s <= H8
@@ -126,6 +130,10 @@ const (
 type Coords struct {
 	x int
 	y int
+}
+
+func (coords Coords) ToSquare() Square {
+	return Square(coords.x + coords.y*8)
 }
 
 func NewCoords(x, y int) Coords {
@@ -248,16 +256,39 @@ func (bitboard BitBoard) PrintBitBoard() {
 	// to enumrate the squares in reverse order
 	// was a pain. Mainly because of the Enum?
 	bitboard = bitboard.FlipVertical()
-	for i := A1; i <= H8; i++ {
-		if i%8 == 0 {
-			fmt.Println()
+	fmt.Println("  A B C D E F G H")
+	// fmt.Println("+-------+-------+-------+-------+-------+-------+-------+-------+")
+	// |       |       |       |       |       |       |       |       |
+	// |
+	piece := ""
+	for i := 7; i >= 0; i-- {
+		fmt.Println("\n+-------+-------+-------+-------+-------+-------+-------+-------+")
+		for j := 7; j >= 0; j-- {
+			if j == 7 {
+				fmt.Print("|")
+			}
+			if bitboard.IsBitSetByCoords(Coords{j, i}) {
+				piece = string(MakePiece(WHITE, BISHOP).ColoredSymbol())
+			} else {
+				piece = ""
+			}
+			fmt.Printf("   %-4s", piece)
+
+			fmt.Print("|")
 		}
-		square := "[ ]"
-		if bitboard.IsBitSet(i) {
-			square = "[" + string(MakePiece(WHITE, BISHOP).Symbol()) + " ]"
+		fmt.Println()
+
+		for k := 0; k < 8; k++ {
+			// fmt.Printf("%-7s ", "|")
+			if k == 0 {
+				fmt.Print("|")
+			}
+			fmt.Printf("   \x1b[30m%-4s\x1b[0m", string(Coords{k, i}.ToSquare().String()))
+
+			fmt.Print("|")
 		}
-		fmt.Print(square)
 	}
+	fmt.Println("\n+-------+-------+-------+-------+-------+-------+-------+-------+")
 }
 
 func (b BitBoard) FlipVertical() BitBoard {
@@ -288,7 +319,7 @@ func (bitboard *BitBoard) SetBit(square Square) {
 
 func (bitboard BitBoard) GetBitByCoords(coords Coords) BitBoard {
 	// Needs the parenthesis for proper order of operations
-	return bitboard & (1 << CoordsToIndex(coords))
+	return bitboard & (1 << coords.ToSquare())
 }
 
 func (bitboard BitBoard) IsBitSetByCoords(coords Coords) bool {
@@ -296,5 +327,5 @@ func (bitboard BitBoard) IsBitSetByCoords(coords Coords) bool {
 }
 
 func (bitboard *BitBoard) SetBitByCoords(coords Coords) {
-	*bitboard |= 1 << CoordsToIndex(coords)
+	*bitboard |= 1 << coords.ToSquare()
 }

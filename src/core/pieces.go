@@ -1,5 +1,7 @@
 package core
 
+import "fmt"
+
 type PieceType uint8
 
 const (
@@ -36,35 +38,92 @@ const (
 	PIECE_NB Piece = 13
 )
 
+func (p Piece) Char() string {
+	color := p.Color()
+	ptype := p.TypeOf()
+	if color == WHITE {
+		switch ptype {
+		case PAWN:
+			return "P"
+		case BISHOP:
+			return "B"
+		case QUEEN:
+			return "Q"
+		case KING:
+			return "K"
+		case KNIGHT:
+			return "Kn"
+		case ROOK:
+			return "R"
+		}
+	} else {
+		switch ptype {
+		case KNIGHT:
+			return "kn"
+		case BISHOP:
+			return "b"
+		case ROOK:
+			return "r"
+		case PAWN:
+			return "p"
+		case QUEEN:
+			return "q"
+		case KING:
+			return "k"
+		}
+	}
+	panic("Invalid piece given: " + string(p))
+}
+
+func (p Piece) ColoredChar() string {
+	color := 30
+	if p.Color() == WHITE {
+		color = 31
+	}
+	return fmt.Sprintf("\x1b[%dm%-4s\x1b[0m", color, p.Char())
+}
+
+func (p Piece) ColoredSymbol() string {
+	color := 30
+	if p.Color() == WHITE {
+		color = 31
+	}
+	return fmt.Sprintf("\x1b[%dm%-4s\x1b[0m", color, string(p.Symbol()))
+}
+
 func (p Piece) Symbol() rune {
 	color := p.Color()
 	ptype := p.TypeOf()
-	pieceCode := Piece(ptype) + Piece(color)
-	switch pieceCode {
-	case W_PAWN:
-		return '♙'
-	case B_PAWN:
-		return '♟'
-	case W_KNIGHT:
-		return '♘'
-	case B_KNIGHT:
-		return '♞'
-	case W_BISHOP:
-		return '♗'
-	case B_BISHOP:
-		return '♝'
-	case W_ROOK:
-		return '♖'
-	case B_ROOK:
-		return '♜'
-	case W_QUEEN:
-		return '♕'
-	case B_QUEEN:
-		return '♛'
-	case W_KING:
-		return '♔'
-	case B_KING:
-		return '♚'
+	if color == WHITE {
+		switch ptype {
+		case PAWN:
+			return '♙'
+		case BISHOP:
+			return '♗'
+		case QUEEN:
+			return '♕'
+		case KING:
+			return '♔'
+		case KNIGHT:
+			return '♘'
+		case ROOK:
+			return '♖'
+		}
+	} else {
+		switch ptype {
+		case KNIGHT:
+			return '♞'
+		case BISHOP:
+			return '♝'
+		case ROOK:
+			return '♜'
+		case PAWN:
+			return '♟'
+		case QUEEN:
+			return '♛'
+		case KING:
+			return '♚'
+		}
 	}
 	panic("Invalid piece given: " + string(p))
 }
