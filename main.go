@@ -18,7 +18,8 @@ func main() {
 	from.SetBit(core.A2)
 	to.SetBit(core.A8)
 	fromTo := from.Xor(to)
-	fromTo.PrintBitBoard()
+	fromTo.PrintPosition()
+	// fromTo.PrintBB()
 	// piecesBB[pieces.B_BISHOP].UpdateBB
 	// piecesBB[pieces.B_BISHOP].PrintBitBoard()
 	// bitboard = bitboards.RANK_1
