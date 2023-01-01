@@ -1,6 +1,9 @@
 package core
 
-import "fmt"
+import (
+	"fmt"
+	"unicode"
+)
 
 type PieceType uint8
 
@@ -13,7 +16,7 @@ const (
 	QUEEN         PieceType = 5
 	KING          PieceType = 6
 	PIECE_MASK              = 7
-	// ALL_PIECES    PieceType = 0
+	ALL_PIECES    PieceType = 0
 	PIECE_TYPE_NB PieceType = 8
 )
 
@@ -38,38 +41,38 @@ const (
 	PIECE_NB Piece = 13
 )
 
-func (p Piece) Char() string {
+func (p Piece) Char() rune {
 	color := p.Color()
 	ptype := p.TypeOf()
 	if color == WHITE {
 		switch ptype {
 		case PAWN:
-			return "P"
+			return 'P'
 		case BISHOP:
-			return "B"
+			return 'B'
 		case QUEEN:
-			return "Q"
+			return 'Q'
 		case KING:
-			return "K"
+			return 'K'
 		case KNIGHT:
-			return "Kn"
+			return 'N'
 		case ROOK:
-			return "R"
+			return 'R'
 		}
 	} else {
 		switch ptype {
 		case KNIGHT:
-			return "kn"
+			return 'n'
 		case BISHOP:
-			return "b"
+			return 'b'
 		case ROOK:
-			return "r"
+			return 'r'
 		case PAWN:
-			return "p"
+			return 'p'
 		case QUEEN:
-			return "q"
+			return 'q'
 		case KING:
-			return "k"
+			return 'k'
 		}
 	}
 	panic("Invalid piece given: " + string(p))
@@ -80,7 +83,7 @@ func (p Piece) ColoredChar() string {
 	if p.Color() == WHITE {
 		color = 31
 	}
-	return fmt.Sprintf("\x1b[%dm%-4s\x1b[0m", color, p.Char())
+	return fmt.Sprintf("\x1b[%dm%-4s\x1b[0m", color, string(p.Char()))
 }
 
 func (p Piece) ColoredSymbol() string {
@@ -141,4 +144,32 @@ func (p Piece) Color() Color {
 // since the value doesn't change only the type.
 func MakePiece(c Color, pt PieceType) Piece {
 	return Piece((uint8(c) << 3) + uint8(pt))
+}
+
+func MakePieceFromChar(ch rune) Piece {
+	var pcolor Color
+	var ptype PieceType
+	if unicode.IsUpper(ch) {
+		pcolor = WHITE
+	} else {
+		pcolor = BLACK
+	}
+	chl := unicode.ToLower(ch)
+	switch chl {
+	case 'p':
+		ptype = PAWN
+	case 'n':
+		ptype = KNIGHT
+	case 'b':
+		ptype = BISHOP
+	case 'r':
+		ptype = ROOK
+	case 'q':
+		ptype = QUEEN
+	case 'k':
+		ptype = KING
+	default:
+		panic("Invalid piece given: " + string(ch))
+	}
+	return MakePiece(pcolor, ptype)
 }

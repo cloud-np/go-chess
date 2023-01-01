@@ -251,77 +251,19 @@ type FormatingBitBoard interface {
 }
 
 func (bitboard BitBoard) PrintBB() {
-
-}
-
-func (bitboard BitBoard) PrintPosition() {
-
-	// Flipping was much easier because trying
-	// to enumrate the squares in reverse order
-	// was a pain. Mainly because of the Enum?
 	bitboard = bitboard.FlipVertical()
-	piece := ""
+	// piece := ""
 	for i := A1; i <= H8; i++ {
 		if i%8 == 0 {
-			fmt.Println("\n  +-------+-------+-------+-------+-------+-------+-------+-------+")
-			fmt.Printf("%d |", 8-i/8)
+			fmt.Println()
 		}
-		// fmt.Print(i, j, Coords{j, i}.ToSquare().String())
 		if bitboard.IsBitSet(Square(i)) {
-			// if bitboard.IsBitSetByCoords(Square(j + i*8)) {
-			piece = string(MakePiece(WHITE, BISHOP).ColoredSymbol())
+			fmt.Print(" \x1b[31m1\x1b[0m ")
 		} else {
-			piece = ""
+			fmt.Print(" 0 ")
 		}
-		fmt.Printf("   %-4s|", piece)
-
-		// fmt.Print("|")
-		// fmt.Println()
-
-		// To print extra information needs fixing tho
-		// if i%8 == 0 && i != 0 {
-		// 	fmt.Print("\n|")
-		// 	for k := 0; k < 8; k++ {
-		// 		fmt.Printf("   \x1b[30m%-4s\x1b[0m", string(Coords{k, int(i / 8)}.ToSquare().String()))
-		// 		fmt.Print("|")
-		// 	}
-		// }
-
 	}
-	fmt.Println("\n  +-------+-------+-------+-------+-------+-------+-------+-------+")
-	fmt.Printf("     A        B       C       D       E        F       G       H\n\n")
 }
-
-// fmt.Println("\n+-------+-------+-------+-------+-------+-------+-------+-------+")
-// piece := ""
-// for i := 7; i >= 0; i-- {
-// 	fmt.Println("\n+-------+-------+-------+-------+-------+-------+-------+-------+")
-// 	for j := 7; j >= 0; j-- {
-// 		if j == 7 {
-// 			fmt.Print("|")
-// 		}
-// 		fmt.Print(i, j, Coords{j, i}.ToSquare().String())
-// 		if bitboard.IsBitSet(Coords{j, i}.ToSquare()) {
-// 			// if bitboard.IsBitSetByCoords(Square(j + i*8)) {
-// 			piece = string(MakePiece(WHITE, BISHOP).ColoredSymbol())
-// 		} else {
-// 			piece = ""
-// 		}
-// 		fmt.Printf("   %-4s", piece)
-
-// 		fmt.Print("|")
-// 	}
-// 	fmt.Println()
-
-// 	for k := 0; k < 8; k++ {
-// 		if k == 0 {
-// 			fmt.Print("|")
-// 		}
-// 		fmt.Printf("   \x1b[30m%-4s\x1b[0m", string(Coords{k, i}.ToSquare().String()))
-
-// 		fmt.Print("|")
-// 	}
-// }
 
 func (b BitBoard) FlipVertical() BitBoard {
 	k1 := BitBoard(0x00FF00FF00FF00FF)

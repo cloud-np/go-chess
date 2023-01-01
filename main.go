@@ -11,15 +11,19 @@ func main() {
 	// whitePiece := pieces.MakePiece(color, piece)
 	// fmt.Println(whitePiece.Color())
 	// fmt.Println(whitePiece.TypeOf())
-	// var piecesBB map[]bitboards.BitBoard ma
-	// piecesBB[pieces.B_BISHOP] = bitboards.NewBitBoard()
-	from := core.NewBitBoard()
-	to := core.NewBitBoard()
-	from.SetBit(core.A2)
-	to.SetBit(core.A8)
-	fromTo := from.Xor(to)
-	fromTo.PrintPosition()
+	// from := core.NewBitBoard()
+	// to := core.NewBitBoard()
+	// from.SetBit(core.A2)
+	// to.SetBit(core.A8)
+	// fromTo := from.Xor(to)
 	// fromTo.PrintBB()
+	// STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+	// STARTING_FEN = "rnbqk2r/ppp2ppp/3bpn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 0 1"
+	pos := core.Fen("rnbqk2r/ppp2ppp/3bpn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 0 1").CreatePosition()
+	pos.PrintPosition()
+	// pos.GetPieces()[core.B_BISHOP].PrintBB()
+	// val.PrintBB()
+	// fromTo.PrintPosition()
 	// piecesBB[pieces.B_BISHOP].UpdateBB
 	// piecesBB[pieces.B_BISHOP].PrintBitBoard()
 	// bitboard = bitboards.RANK_1
