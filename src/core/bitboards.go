@@ -212,6 +212,9 @@ type BitBoardShfiting interface {
 	SoWeOne()
 }
 
+// TODO: Passing these by reference it's bad idea.
+// The value itself its extremely fact to copy over.
+
 // Verticals do not need check for overflows
 func (b *BitBoard) SouthOne() {
 	*b >>= 8
