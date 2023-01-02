@@ -17,9 +17,9 @@ func main() {
 	// to.SetBit(core.A8)
 	// fromTo := from.Xor(to)
 	// fromTo.PrintBB()
-	// STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-	// STARTING_FEN = "rnbqk2r/ppp2ppp/3bpn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 0 1"
-	pos := core.Fen("rnbqk2r/ppp2ppp/3bpn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 0 1").CreatePosition()
+	fen := "rnbqk2r/ppp2ppp/3bpn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 0 1"
+	// fen := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+	pos := core.Fen(fen).CreatePosition()
 	pos.PrintPosition()
 	// pos.GetPieces()[core.B_BISHOP].PrintBB()
 	// val.PrintBB()
