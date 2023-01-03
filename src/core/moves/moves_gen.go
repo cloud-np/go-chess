@@ -14,7 +14,7 @@ const (
 )
 
 func NewMove(from core.Square, to core.Square) Move {
-	return Move((from << 6) + to)
+	return Move((uint32(from) << 6) + uint32(to))
 }
 
 func (m Move) From() core.Square {

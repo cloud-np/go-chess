@@ -1,6 +1,6 @@
 package moves
 
-type Move uint16
+type Move uint32
 
 const (
 	MOVE_NONE Move = 0
