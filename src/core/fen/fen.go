@@ -1,13 +1,15 @@
 package core
 
 import (
+	"gochess/src/core"
+	"gochess/src/core/position"
 	"strings"
 )
 
 type Fen string
 
-func (fen Fen) CreatePosition() *Position {
-	pos := NewPosition()
+func (fen Fen) CreatePosition() *position.Position {
+	pos := position.NewPosition()
 	sq := 0
 	for _, ch := range fen {
 		if strings.Contains("12345678", string(ch)) {
@@ -17,12 +19,9 @@ func (fen Fen) CreatePosition() *Position {
 		} else if ch == ' ' {
 			break
 		} else {
-			piece := MakePieceFromChar(ch)
-			if piece != NO_PIECE {
-				// if piece.Color() == WHITE && piece.TypeOf() == KING {
-				// 	fmt.Print("White King")
-				// }
-				pos.PutPiece(piece, Square(sq))
+			piece := core.MakePieceFromChar(ch)
+			if piece != core.NO_PIECE {
+				pos.PutPiece(piece, core.Square(sq))
 				sq++
 			}
 		}

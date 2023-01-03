@@ -13,8 +13,16 @@ const (
 	LEGAL        GenType = 5
 )
 
-func (m Move) makeMove(from core.Square, to core.Square) Move {
+func NewMove(from core.Square, to core.Square) Move {
 	return Move((from << 6) + to)
+}
+
+func (m Move) From() core.Square {
+	return core.Square(m >> 6)
+}
+
+func (m Move) To() core.Square {
+	return core.Square(m & 0x3F)
 }
 
 // func generatePawnMoves(pos *core.Position, moves *[]Move, genType GenType) *[]Move {

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"gochess/src/core"
+	fen "gochess/src/core/fen"
+	"gochess/src/core/moves"
 )
 
 func main() {
@@ -18,12 +19,11 @@ func main() {
 	// to.SetBit(core.A8)
 	// fromTo := from.Xor(to)
 	// fromTo.PrintBB()
-	fen := "rnbqk2r/ppp2ppp/3bpn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 0 1"
+	fenStr := "rnbqk2r/ppp2ppp/3bpn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 0 1"
 	// fen := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-	pos := core.Fen(fen).CreatePosition()
+	pos := fen.Fen(fenStr).CreatePosition()
+	pos.MovePiece(moves.NewMove(core.A2, core.A4))
 	pos.PrintPosition()
-	fmt.Print(pos.GetSquare(core.BLACK, core.KING))
-	fmt.Print(pos.GetPiece(core.E1).ToString())
 	// pos.GetPieces()[core.B_BISHOP].PrintBB()
 	// val.PrintBB()
 	// fromTo.PrintPosition()
