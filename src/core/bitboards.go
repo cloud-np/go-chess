@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"math/bits"
 )
 
 type Color uint8
@@ -15,6 +16,13 @@ const (
 	BLACK    Color = 2
 	COLOR_NB Color = 3
 )
+
+func (c Color) ToString() string {
+	if c <= 0 || c > COLOR_NB {
+		panic("INVALID COLOR: " + fmt.Sprint(c))
+	}
+	return [...]string{1: "WHITE", 2: "BLACK", 3: "COLOR_NB"}[c]
+}
 
 type Square uint8
 
@@ -84,6 +92,10 @@ const (
 	G8 Square = 62
 	H8 Square = 63
 )
+
+func (s Square) isOk() bool {
+	return s >= A1 && s <= H8
+}
 
 func (s Square) String() string {
 	return fmt.Sprintf("%c%c", 'a'+s%8, '1'+s/8)
@@ -246,8 +258,8 @@ func (b *BitBoard) NoWeOne() {
 	*b = (*b & NOT_H_FILE) << 7
 }
 
-type FormatingBitBoard interface {
-	PrintBitBoard()
+func (b BitBoard) Count() int {
+	return bits.OnesCount64(uint64(b))
 }
 
 func (bitboard BitBoard) PrintBB() {

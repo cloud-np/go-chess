@@ -1,6 +1,9 @@
 package core
 
-import "fmt"
+import (
+	"fmt"
+	"math/bits"
+)
 
 type Position struct {
 	// Bitboards
@@ -9,15 +12,20 @@ type Position struct {
 	// byTypeBB  map[PieceType]*BitBoard
 	// byColorBB map[Color]*BitBoard
 	// Squares
-	board [64]Piece
+	board      [64]Piece
+	sideToMove Color
 }
 
-func (p Position) GetByTypeBB() [PIECE_TYPE_NB]BitBoard {
+func (p *Position) GetByTypeBB() [PIECE_TYPE_NB]BitBoard {
 	return p.byTypeBB
 }
 
-func (p Position) GetColors() [COLOR_NB]BitBoard {
+func (p *Position) GetColors() [COLOR_NB]BitBoard {
 	return p.byColorBB
+}
+
+func (p *Position) GetSideToMove() Color {
+	return p.sideToMove
 }
 
 // func (p Position) GetByTypeBB() map[PieceType]*BitBoard {
@@ -28,7 +36,39 @@ func (p Position) GetColors() [COLOR_NB]BitBoard {
 // 	return p.byColorBB
 // }
 
-func (p Position) GetBoard() [64]Piece {
+// Not needed yet
+// func (p *Position) Count() uint {
+// }
+func (p *Position) GetPiecesSquares(color Color, pieceType PieceType) BitBoard {
+	return p.byColorBB[color] & p.byTypeBB[pieceType]
+}
+
+// This has to implement LSB and we have to have only one bit set.
+// Meaning we only have one PieceType in that BitBoard. Ideally we
+// should make a function to count the number of bits in a BitBoard.
+func (p *Position) GetSquare(color Color, pieceType PieceType) Square {
+	pbb := p.GetPiecesSquares(color, pieceType)
+	assert(pbb.Count() == 1, fmt.Sprintf("More than one piece of type %s and color %s", pieceType.ToString(), color.ToString()))
+	// This is highly probable to be slower
+	return Square(uint8(bits.TrailingZeros64(uint64(pbb))))
+	// Than this
+	// return Square(pbb & 0x7F)
+	// return Square(pbb)
+}
+
+// func (p *Position) GetSquareByPiece(piece Piece) Square {
+// 	return p.board[sq]
+// }
+
+// func (p *Position) GetKingSquare(color Color) Square {
+// 	return p.byTypeBB[KING]
+// }
+
+func (p *Position) GetPiece(sq Square) Piece {
+	return p.board[sq]
+}
+
+func (p *Position) GetBoard() [64]Piece {
 	return p.board
 }
 
@@ -62,7 +102,7 @@ func (p *Position) MovePiece(from Square, to Square) {
 }
 
 func NewPosition() *Position {
-	p := &Position{}
+	p := &Position{sideToMove: WHITE}
 	// p.byTypeBB = make(map[PieceType]*BitBoard)
 	// p.byColorBB = make(map[Color]*BitBoard)
 	return p

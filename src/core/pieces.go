@@ -20,26 +20,37 @@ const (
 	PIECE_TYPE_NB PieceType = 8
 )
 
+func (pt PieceType) ToString() string {
+	if pt == ALL_PIECES {
+		return "ALL_PIECES || NO_PIECE_TYPE"
+	}
+	return [...]string{"NO_PIECE_TYPE", "PAWN", "KNIGHT", "BISHOP", "ROOK", "QUEEN", "KING", "PIECE_MASK", "PIECE_TYPE_NB"}[pt]
+}
+
 type Piece uint8
 
 // We have to include the NO_PIECE
 const PIECES_NUM = 13
 const (
-	NO_PIECE Piece = 0
-	W_PAWN   Piece = 1
-	W_KNIGHT Piece = 2
-	W_BISHOP Piece = 3
-	W_ROOK   Piece = 4
-	W_QUEEN  Piece = 5
-	W_KING   Piece = 6
-	B_PAWN   Piece = 7
-	B_KNIGHT Piece = 8
-	B_BISHOP Piece = 9
-	B_ROOK   Piece = 10
-	B_QUEEN  Piece = 11
-	B_KING   Piece = 12
-	PIECE_NB Piece = 13
+	NO_PIECE = 0
+	W_PAWN   = 1
+	W_KNIGHT = 2
+	W_BISHOP = 3
+	W_ROOK   = 4
+	W_QUEEN  = 5
+	W_KING   = 6
+	B_PAWN   = 7
+	B_KNIGHT = 8
+	B_BISHOP = 9
+	B_ROOK   = 10
+	B_QUEEN  = 11
+	B_KING   = 12
+	PIECE_NB = 13
 )
+
+func (p Piece) ToString() string {
+	return fmt.Sprint(p.Color().ToString(), " ", p.TypeOf().ToString())
+}
 
 func (p Piece) Char() rune {
 	color := p.Color()

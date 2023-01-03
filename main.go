@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gochess/src/core"
 )
 
@@ -21,6 +22,8 @@ func main() {
 	// fen := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 	pos := core.Fen(fen).CreatePosition()
 	pos.PrintPosition()
+	fmt.Print(pos.GetSquare(core.BLACK, core.KING))
+	fmt.Print(pos.GetPiece(core.E1).ToString())
 	// pos.GetPieces()[core.B_BISHOP].PrintBB()
 	// val.PrintBB()
 	// fromTo.PrintPosition()

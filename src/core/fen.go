@@ -19,6 +19,9 @@ func (fen Fen) CreatePosition() *Position {
 		} else {
 			piece := MakePieceFromChar(ch)
 			if piece != NO_PIECE {
+				// if piece.Color() == WHITE && piece.TypeOf() == KING {
+				// 	fmt.Print("White King")
+				// }
 				pos.PutPiece(piece, Square(sq))
 				sq++
 			}
