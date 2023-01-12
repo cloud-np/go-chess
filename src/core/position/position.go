@@ -116,17 +116,12 @@ func (p Position) PrintPosition() {
 			fmt.Println("\n  +-------+-------+-------+-------+-------+-------+-------+-------+")
 			fmt.Printf("%d |", 8-i/8)
 		}
-		// fmt.Print(i, j, Coords{j, i}.ToSquare().String())
 		if piece != core.NO_PIECE {
-			// if bitboard.IsBitSetByCoords(Square(j + i*8)) {
 			pstr = string(piece.ColoredSymbol())
 		} else {
 			pstr = ""
 		}
 		fmt.Printf("   %-4s|", pstr)
-
-		// fmt.Print("|")
-		// fmt.Println()
 
 		// To print extra information needs fixing tho
 		// if i%8 == 0 && i != 0 {
