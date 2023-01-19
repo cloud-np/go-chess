@@ -42,12 +42,9 @@ func (p *Position) GetPiecesSquares(color core.Color, pieceType core.PieceType) 
 // should make a function to count the number of bits in a BitBoard.
 func (p *Position) GetSquare(color core.Color, pieceType core.PieceType) core.Square {
 	pbb := p.GetPiecesSquares(color, pieceType)
-	core.Assert(pbb.Count() == 1, fmt.Sprintf("More than one piece of type %s and color %s", pieceType.ToString(), color.ToString()))
-	// This is highly probable to be slower
-	return core.Square(uint8(bits.TrailingZeros64(uint64(pbb))))
-	// Than this
-	// return Square(pbb & 0x7F)
-	// return Square(pbb)
+	// core.Assert(pbb.Count() == 1, fmt.Sprintf("More than one piece of type %s and color %s", pieceType.ToString(), color.ToString()))
+	// Why do I have to Flip it? Not sure
+	return core.Square(uint8(bits.TrailingZeros64(uint64(pbb.FlipVertical()))))
 }
 
 // func (p *Position) GetSquareByPiece(piece Piece) Square {
@@ -67,6 +64,9 @@ func (p *Position) GetBoard() [64]core.Piece {
 }
 
 func (p *Position) PutPiece(piece core.Piece, sq core.Square) {
+	// fmt.Print(string(piece.Char()))
+	// fmt.Print(piece.Color() == core.WHITE)
+	// fmt.Print(p.GetSquare(core.BLACK, core.ROOK))
 	// Set based on piece type
 	p.byTypeBB[core.ALL_PIECES].SetBit(sq)
 	p.byTypeBB[piece.TypeOf()].SetBit(sq)
@@ -104,8 +104,11 @@ func NewPosition() *Position {
 	return p
 }
 
-func (p Position) PrintPosition() {
+func (p Position) IsMoveLegal(move moves.Move) bool {
+	return true
+}
 
+func (p Position) PrintPosition(fancy bool) {
 	// Flipping was much easier because trying
 	// to enumrate the squares in reverse order
 	// was a pain. Mainly because of the Enum?
@@ -117,7 +120,11 @@ func (p Position) PrintPosition() {
 			fmt.Printf("%d |", 8-i/8)
 		}
 		if piece != core.NO_PIECE {
-			pstr = string(piece.ColoredSymbol())
+			if fancy {
+				pstr = piece.ColoredSymbol()
+			} else {
+				pstr = piece.ColoredChar()
+			}
 		} else {
 			pstr = ""
 		}
