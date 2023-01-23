@@ -106,10 +106,6 @@ func NewPosition() *Position {
 
 func (p Position) PrintPosition() {
 
-	// Flipping was much easier because trying
-	// to enumrate the squares in reverse order
-	// was a pain. Mainly because of the Enum?
-	// p = bitboard.FlipVertical()
 	pstr := ""
 	for i, piece := range p.board {
 		if i%8 == 0 {
