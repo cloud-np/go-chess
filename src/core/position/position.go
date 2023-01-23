@@ -66,11 +66,12 @@ func (p *Position) GetBoard() [64]core.Piece {
 func (p *Position) PutPiece(piece core.Piece, sq core.Square) {
 	// fmt.Print(string(piece.Char()))
 	// fmt.Print(piece.Color() == core.WHITE)
-	// fmt.Print(p.GetSquare(core.BLACK, core.ROOK))
+
 	// Set based on piece type
 	p.byTypeBB[core.ALL_PIECES].SetBit(sq)
 	p.byTypeBB[piece.TypeOf()].SetBit(sq)
 	p.byColorBB[piece.Color()].SetBit(sq)
+	fmt.Print(sq)
 	p.board[sq] = piece
 }
 
@@ -78,9 +79,9 @@ func (p *Position) PutPiece(piece core.Piece, sq core.Square) {
 func (p *Position) RemovePiece(sq core.Square) {
 	piece := p.board[sq]
 	// Unset the bits based on piece type and colors
-	p.byTypeBB[core.ALL_PIECES].Xor(core.BitBoard(sq))
-	p.byTypeBB[piece.TypeOf()].Xor(core.BitBoard(sq))
-	p.byColorBB[piece.Color()].Xor(core.BitBoard(sq))
+	p.byTypeBB[core.ALL_PIECES] = p.byTypeBB[core.ALL_PIECES].Xor(core.BitBoard(sq))
+	p.byTypeBB[piece.TypeOf()] = p.byTypeBB[piece.TypeOf()].Xor(core.BitBoard(sq))
+	p.byColorBB[piece.Color()] = p.byColorBB[piece.Color()].Xor(core.BitBoard(sq))
 	p.board[sq] = core.NO_PIECE
 }
 
@@ -90,9 +91,9 @@ func (p *Position) MovePiece(move moves.Move) {
 	piece := p.board[from]
 	fromTo := core.BitBoard(from | to)
 	// Unset the bits based on piece type and colors
-	p.byTypeBB[core.ALL_PIECES].Xor(fromTo)
-	p.byTypeBB[core.PAWN].Xor(fromTo)
-	p.byColorBB[piece.Color()].Xor(fromTo)
+	p.byTypeBB[core.ALL_PIECES] = p.byTypeBB[core.ALL_PIECES].Xor(fromTo)
+	p.byTypeBB[core.PAWN] = p.byTypeBB[core.PAWN].Xor(fromTo)
+	p.byColorBB[piece.Color()] = p.byColorBB[piece.Color()].Xor(fromTo)
 	p.board[from] = core.NO_PIECE
 	p.board[to] = piece
 }
@@ -129,16 +130,6 @@ func (p Position) PrintPosition(fancy bool) {
 			pstr = ""
 		}
 		fmt.Printf("   %-4s|", pstr)
-
-		// To print extra information needs fixing tho
-		// if i%8 == 0 && i != 0 {
-		// 	fmt.Print("\n|")
-		// 	for k := 0; k < 8; k++ {
-		// 		fmt.Printf("   \x1b[30m%-4s\x1b[0m", string(Coords{k, int(i / 8)}.ToSquare().String()))
-		// 		fmt.Print("|")
-		// 	}
-		// }
-
 	}
 	fmt.Println("\n  +-------+-------+-------+-------+-------+-------+-------+-------+")
 	fmt.Printf("     A        B       C       D       E        F       G       H\n\n")
