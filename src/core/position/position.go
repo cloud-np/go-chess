@@ -86,14 +86,28 @@ func (p *Position) RemovePiece(sq core.Square) {
 }
 
 func (p *Position) MovePiece(move moves.Move) {
+	fmt.Printf("\nMove: %032b\n", move)
 	from := move.From()
 	to := move.To()
+	fmt.Printf("\nFrom: %032b\n To: %032b\n", from, to)
+
 	piece := p.board[from]
-	fromTo := core.BitBoard(from | to)
+	// fromTo := core.BitBoard(from | to)
+
+	// // Unset the bits based on piece type and colors
+	// p.byTypeBB[core.ALL_PIECES] = p.byTypeBB[core.ALL_PIECES].Xor(fromTo)
+	// p.byTypeBB[core.PAWN] = p.byTypeBB[core.PAWN].Xor(fromTo)
+	// p.byColorBB[piece.Color()] = p.byColorBB[piece.Color()].Xor(fromTo)
+	// p.board[from] = core.NO_PIECE
+	// p.board[to] = piece
+	fromBB := core.BitBoard(1) << from
+	toBB := core.BitBoard(1) << to
+
 	// Unset the bits based on piece type and colors
-	p.byTypeBB[core.ALL_PIECES] = p.byTypeBB[core.ALL_PIECES].Xor(fromTo)
-	p.byTypeBB[core.PAWN] = p.byTypeBB[core.PAWN].Xor(fromTo)
-	p.byColorBB[piece.Color()] = p.byColorBB[piece.Color()].Xor(fromTo)
+	p.byTypeBB[core.ALL_PIECES] = p.byTypeBB[core.ALL_PIECES].Xor(fromBB).Xor(toBB)
+	p.byTypeBB[core.PAWN] = p.byTypeBB[core.PAWN].Xor(fromBB).Xor(toBB)
+	p.byColorBB[piece.Color()] = p.byColorBB[piece.Color()].Xor(fromBB).Xor(toBB)
+
 	p.board[from] = core.NO_PIECE
 	p.board[to] = piece
 }
