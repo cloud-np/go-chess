@@ -71,7 +71,6 @@ func (p *Position) PutPiece(piece core.Piece, sq core.Square) {
 	p.byTypeBB[core.ALL_PIECES].SetBit(sq)
 	p.byTypeBB[piece.TypeOf()].SetBit(sq)
 	p.byColorBB[piece.Color()].SetBit(sq)
-	fmt.Print(sq)
 	p.board[sq] = piece
 }
 
@@ -86,10 +85,8 @@ func (p *Position) RemovePiece(sq core.Square) {
 }
 
 func (p *Position) MovePiece(move moves.Move) {
-	fmt.Printf("\nMove: %032b\n", move)
 	from := move.From()
 	to := move.To()
-	fmt.Printf("\nFrom: %032b\n To: %032b\n", from, to)
 
 	piece := p.board[from]
 	// fromTo := core.BitBoard(from | to)
@@ -135,32 +132,6 @@ func (p *Position) PrintBoardSquares() {
 	}
 }
 
-// Flipping was much easier because trying
-// to enumrate the squares in reverse order
-// was a pain. Mainly because of the Enum?
-// p = bitboard.FlipVertical()
-
-func (p Position) PrintPosition1(fancy bool) {
-	pstr := ""
-	for i, piece := range p.board {
-		if i%8 == 0 {
-			fmt.Println("\n  +-------+-------+-------+-------+-------+-------+-------+-------+")
-			fmt.Printf("%d |", 8-i/8)
-		}
-		if piece != core.NO_PIECE {
-			if fancy {
-				pstr = piece.ColoredSymbol()
-			} else {
-				pstr = piece.ColoredChar()
-			}
-		} else {
-			pstr = ""
-		}
-		fmt.Printf("   %-4s|", pstr)
-	}
-	fmt.Println("\n  +-------+-------+-------+-------+-------+-------+-------+-------+")
-	fmt.Printf("     A        B       C       D       E        F       G       H\n\n")
-}
 func (p Position) PrintPosition(fancy bool) {
 	pstr := ""
 	for rank := 7; rank >= 0; rank-- {
