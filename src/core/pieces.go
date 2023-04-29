@@ -53,8 +53,12 @@ func (p Piece) ToString() string {
 }
 
 func (p Piece) Char() rune {
-	color := p.Color()
 	ptype := p.TypeOf()
+	if ptype == NO_PIECE_TYPE {
+		return ' '
+	}
+
+	color := p.Color()
 	if color == WHITE {
 		switch ptype {
 		case PAWN:
@@ -151,7 +155,7 @@ func (p Piece) Color() Color {
 }
 
 // NOTE: It would be ideal to find a way
-// without casting. But castling in Go is not slow
+// without casting. But casting in Go is not slow
 // since the value doesn't change only the type.
 func MakePiece(c Color, pt PieceType) Piece {
 	return Piece((uint8(c) << 3) + uint8(pt))

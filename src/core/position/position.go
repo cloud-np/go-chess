@@ -123,11 +123,24 @@ func (p Position) IsMoveLegal(move moves.Move) bool {
 	return true
 }
 
-func (p Position) PrintPosition(fancy bool) {
-	// Flipping was much easier because trying
-	// to enumrate the squares in reverse order
-	// was a pain. Mainly because of the Enum?
-	// p = bitboard.FlipVertical()
+func (p *Position) PrintBoardSquares() {
+	fmt.Printf("\n")
+	for rank := 7; rank >= 0; rank-- {
+		for file := 0; file < 8; file++ {
+			square := core.Square(rank*8 + file)
+			piece := p.board[square]
+			fmt.Printf(" %c", piece.Char())
+		}
+		fmt.Println()
+	}
+}
+
+// Flipping was much easier because trying
+// to enumrate the squares in reverse order
+// was a pain. Mainly because of the Enum?
+// p = bitboard.FlipVertical()
+
+func (p Position) PrintPosition1(fancy bool) {
 	pstr := ""
 	for i, piece := range p.board {
 		if i%8 == 0 {
@@ -144,6 +157,29 @@ func (p Position) PrintPosition(fancy bool) {
 			pstr = ""
 		}
 		fmt.Printf("   %-4s|", pstr)
+	}
+	fmt.Println("\n  +-------+-------+-------+-------+-------+-------+-------+-------+")
+	fmt.Printf("     A        B       C       D       E        F       G       H\n\n")
+}
+func (p Position) PrintPosition(fancy bool) {
+	pstr := ""
+	for rank := 7; rank >= 0; rank-- {
+		fmt.Println("\n  +-------+-------+-------+-------+-------+-------+-------+-------+")
+		fmt.Printf("%d |", rank+1)
+		for file := 0; file < 8; file++ {
+			sq := rank*8 + file
+			piece := p.board[sq]
+			if piece != core.NO_PIECE {
+				if fancy {
+					pstr = piece.ColoredSymbol()
+				} else {
+					pstr = piece.ColoredChar()
+				}
+			} else {
+				pstr = ""
+			}
+			fmt.Printf("   %-4s|", pstr)
+		}
 	}
 	fmt.Println("\n  +-------+-------+-------+-------+-------+-------+-------+-------+")
 	fmt.Printf("     A        B       C       D       E        F       G       H\n\n")
