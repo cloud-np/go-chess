@@ -1,12 +1,22 @@
 package main
 
 import (
+	"gochess/cmd/server"
 	"gochess/src/core"
 	fen "gochess/src/core/fen"
 	"gochess/src/core/moves"
 )
 
+type Config struct {
+	Port string
+}
+
 func main() {
+	port := "4300"
+	server.NewServer(port)
+}
+
+func main1() {
 	// fenStr := "rbqk2r/ppp2ppp/3bpn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 0 1"
 	fenStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 	pos := fen.Fen(fenStr).CreatePosition()
