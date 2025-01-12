@@ -1,6 +1,9 @@
 package middleware
 
-import "net/http"
+import (
+	"net/http"
+	"slices"
+)
 
 func CorsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -15,7 +18,31 @@ func CorsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		// Pass to the next handler
 		next(w, r)
+	}
+}
+
+func JSONMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// JSON response 
+		w.Header().Set("Content-Type", "application/json")
+
+		next(w, r)
+	}
+}
+
+func CorrectMethods(methods []string) func(next http.HandlerFunc) http.HandlerFunc {
+	return func(next http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			if !slices.Contains(methods, r.Method) {
+				http.Error(w, "Ivalid request method: " + r.Method, http.StatusMethodNotAllowed)
+				return
+			}
+
+			// JSON response 
+			w.Header().Set("Content-Type", "application/json")
+
+			next(w, r)
+		}
 	}
 }

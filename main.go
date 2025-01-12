@@ -1,9 +1,9 @@
 package main
 
 import (
-	"gochess/cmd/server"
+	"gochess/internal/app/adapters/api/server"
 	"gochess/src/core"
-	fen "gochess/src/core/fen"
+	"gochess/src/core/fen"
 	"gochess/src/core/moves"
 )
 
@@ -13,7 +13,7 @@ type Config struct {
 
 func main() {
 	port := "4300"
-	server.NewServer(port)
+	server.RunServer(port)
 }
 
 func main1() {

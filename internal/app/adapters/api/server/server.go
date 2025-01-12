@@ -8,7 +8,12 @@ import (
 )
 
 func RunServer(port string) {
-	http.HandleFunc("/fen", middleware.CorsMiddleware(handlers.GetFen))
+
+	http.HandleFunc("/fen", middleware.ChainMiddlewares(handlers.SetFen,
+		middleware.CorrectMethods([]string{http.MethodPost}),
+		middleware.CorsMiddleware,
+		middleware.JSONMiddleware,
+	))
 	http.HandleFunc("/*", middleware.CorsMiddleware(handlers.FourOFour))
 
 	fmt.Println("Server starting on " + port + "...")

@@ -1,4 +1,4 @@
-package core
+package fen
 
 import (
 	"gochess/src/core"
@@ -33,6 +33,7 @@ func (fen Fen) CreatePosition() *position.Position {
 	return pos
 }
 
+// Starts from a8
 // func (fen Fen) CreatePosition() *position.Position {
 // 	pos := position.NewPosition()
 // 	sq := 0
